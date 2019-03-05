@@ -76,7 +76,7 @@ L.GridLayer.GoogleMutant = L.GridLayer.extend({
     this._initMutantContainer();
 
     let retryCounter = 0;
-    const googleMapsLoaderCallback = function googleMapsLoaderCallback(google) {
+    const googleMapsLoaderCallback = function(google) {
       if (!map.getPane() && retryCounter < 10) {
         retryCounter += 1;
         setTimeout(googleMapsLoaderCallback, 150);
