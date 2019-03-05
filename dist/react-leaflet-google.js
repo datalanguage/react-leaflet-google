@@ -1325,7 +1325,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this._initMutantContainer();
 
 	    var retryCounter = 0;
-	    var googleMapsLoaderCallback = function googleMapsLoaderCallback(google) {
+	    var googleMapsLoaderCallback = function (google) {
 	      if (!map.getPane() && retryCounter < 10) {
 	        retryCounter += 1;
 	        setTimeout(googleMapsLoaderCallback, 150);
