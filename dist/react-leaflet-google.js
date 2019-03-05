@@ -1254,7 +1254,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// Based on https://github.com/shramov/leaflet-plugins
 	// GridLayer like https://avinmathew.com/leaflet-and-google-maps/ , but using MutationObserver instead of jQuery
-	_googleMaps2.default.VERSION = "3.32";
+	_googleMaps2.default.VERSION = "3.34";
 
 	var google = void 0;
 
@@ -1324,8 +1324,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    L.GridLayer.prototype.onAdd.call(this, map);
 	    this._initMutantContainer();
 
-	    // Will be called after callback passed in initialize function
-	    _googleMaps2.default.load(function (google) {
+	    var retryCounter = 0;
+	    var googleMapsLoaderCallback = function googleMapsLoaderCallback(google) {
+	      if (!map.getPane() && retryCounter < 10) {
+	        retryCounter += 1;
+	        setTimeout(googleMapsLoaderCallback, 150);
+	        return;
+	      }
 	      this._map = map;
 
 	      this._initMutant();
@@ -1340,7 +1345,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this._reset();
 	      this._update();
-	    }.bind(this));
+	    }.bind(this);
+
+	    // Will be called after callback passed in initialize function
+	    _googleMaps2.default.load(googleMapsLoaderCallback);
 	  },
 	  onRemove: function onRemove(map) {
 	    L.GridLayer.prototype.onRemove.call(this, map);
